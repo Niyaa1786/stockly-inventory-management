@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="Stockly.Api/Stockly.Api.csproj" />
+  <Project Path="Stockly.Application/Stockly.Application.csproj" />
+  <Project Path="Stockly.Domain/Stockly.Domain.csproj" />
+  <Project Path="Stockly.Infrastructure/Stockly.Infrastructure.csproj" />
+</Solution>

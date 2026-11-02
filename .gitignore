@@ -399,3 +399,5 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+src/Stockly/Stockly.Api/appsettings.Development.json
+src/Stockly/Stockly.Api/appsettings.json
