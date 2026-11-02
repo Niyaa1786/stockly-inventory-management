@@ -38,6 +38,11 @@ public class GlobalExceptionHandler : IExceptionHandler
             statusCode = (int)HttpStatusCode.Unauthorized;
             message = "Authentication is required";
         }
+        else if (exception is ForbiddenException forbiddenEx)
+        {
+            statusCode = (int)HttpStatusCode.Forbidden;
+            message = forbiddenEx.Message;
+        }
         else if (exception is DbUpdateConcurrencyException dbEx)
         {
             statusCode = (int)HttpStatusCode.Conflict;
