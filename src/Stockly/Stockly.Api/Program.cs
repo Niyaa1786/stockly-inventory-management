@@ -2,6 +2,9 @@
 using Scalar.AspNetCore;
 using Serilog;
 using Serilog.Events;
+using Stockly.Api.Extensions;
+using Stockly.Application;
+using Stockly.Infrastructure;
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Override("Microsoft.AspNetCore.Hosting", LogEventLevel.Warning)
@@ -17,12 +20,18 @@ try
     // Add services to the container.
     builder.Services.AddSerilog();
 
-    builder.Services.AddControllers();
-    // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-    builder.Services.AddOpenApi();
+    builder.Services
+        .AddApplication()
+        .AddInfrastructure(builder.Configuration)
+        .AddApiServices()
+        .AddJwtAuthentication(builder.Configuration)
+        .AddExceptionHandling();
 
     var app = builder.Build();
+
     app.UseSerilogRequestLogging();
+
+    app.UseExceptionHandler();
 
     // Configure the HTTP request pipeline.
     if (app.Environment.IsDevelopment())
@@ -32,6 +41,8 @@ try
     }
 
     app.UseHttpsRedirection();
+
+    app.UseAuthentication();
 
     app.UseAuthorization();
 
