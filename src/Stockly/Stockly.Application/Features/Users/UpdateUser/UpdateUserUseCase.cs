@@ -25,14 +25,11 @@ public class UpdateUserUseCase(IUnitOfWork unitOfWork, IValidator<UpdateUserRequ
 
         return new UpdateUserResponse
         {
-            User = new UserDto
-            {
-                Id = user.Id,
-                Email = user.Email,
-                FullName = user.FullName,
-                Role = user.Role,
-                IsActive = user.IsActive
-            }
+            Id = user.Id,
+            Email = user.Email,
+            FullName = user.FullName,
+            Role = user.Role,
+            IsActive = user.IsActive
         };
     }
 }
