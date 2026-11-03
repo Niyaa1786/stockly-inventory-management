@@ -24,28 +24,28 @@ public class UsersController(
     RestoreUserUseCase restoreUserUseCase) : ControllerBase
 {
     [HttpGet]
-    public async Task<IActionResult> GetUsers([FromQuery] GetUsersRequest request, CancellationToken ct)
+    public async Task<ActionResult<ApiResponse<GetUsersResponse>>> GetUsers([FromQuery] GetUsersRequest request, CancellationToken ct)
     {
         var result = await getUsersUseCase.ExecuteAsync(request, ct);
         return Ok(ApiResponse<GetUsersResponse>.Success(result));
     }
 
     [HttpGet("{id:guid}")]
-    public async Task<IActionResult> GetUserById(Guid id, CancellationToken ct)
+    public async Task<ActionResult<ApiResponse<GetUserByIdResponse>>> GetUserById(Guid id, CancellationToken ct)
     {
         var result = await getUserByIdUseCase.ExecuteAsync(new GetUserByIdRequest { Id = id }, ct);
         return Ok(ApiResponse<GetUserByIdResponse>.Success(result));
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateUser(CreateUserRequest request, CancellationToken ct)
+    public async Task<ActionResult<ApiResponse<CreateUserResponse>>> CreateUser(CreateUserRequest request, CancellationToken ct)
     {
         var result = await createUserUseCase.ExecuteAsync(request, ct);
         return Ok(ApiResponse<CreateUserResponse>.Success(result, "User created successfully."));
     }
 
     [HttpPut("{id:guid}")]
-    public async Task<IActionResult> UpdateUser(Guid id, UpdateUserRequest request, CancellationToken ct)
+    public async Task<ActionResult<ApiResponse<UpdateUserResponse>>> UpdateUser(Guid id, UpdateUserRequest request, CancellationToken ct)
     {
         request.Id = id;
         var result = await updateUserUseCase.ExecuteAsync(request, ct);
@@ -53,7 +53,7 @@ public class UsersController(
     }
 
     [HttpDelete("{id:guid}")]
-    public async Task<IActionResult> DeactivateUser(Guid id, CancellationToken ct)
+    public async Task<ActionResult<ApiResponse<DeactivateUserResponse>>> DeactivateUser(Guid id, CancellationToken ct)
     {
         var request = new DeactivateUserRequest { Id = id, CurrentUserId = GetUserId() };
         var result = await deactivateUserUseCase.ExecuteAsync(request, ct);
@@ -61,7 +61,7 @@ public class UsersController(
     }
 
     [HttpPost("{id:guid}/restore")]
-    public async Task<IActionResult> RestoreUser(Guid id, CancellationToken ct)
+    public async Task<ActionResult<ApiResponse<RestoreUserResponse>>> RestoreUser(Guid id, CancellationToken ct)
     {
         var result = await restoreUserUseCase.ExecuteAsync(new RestoreUserRequest { Id = id }, ct);
         return Ok(ApiResponse<RestoreUserResponse>.Success(result, "User restored successfully."));

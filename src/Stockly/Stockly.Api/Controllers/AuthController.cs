@@ -20,7 +20,7 @@ public class AuthController(
 {
     [HttpPost("login")]
     [AllowAnonymous]
-    public async Task<IActionResult> Login(LoginRequest request, CancellationToken ct)
+    public async Task<ActionResult<ApiResponse<LoginResponse>>> Login(LoginRequest request, CancellationToken ct)
     {
         var result = await loginUseCase.ExecuteAsync(request, ct);
         return Ok(ApiResponse<LoginResponse>.Success(result, result.Message));
@@ -28,21 +28,21 @@ public class AuthController(
 
     [HttpPost("refresh-token")]
     [AllowAnonymous]
-    public async Task<IActionResult> Refresh(RefreshAccessTokenRequest request, CancellationToken ct)
+    public async Task<ActionResult<ApiResponse<RefreshAccessTokenResponse>>> Refresh(RefreshAccessTokenRequest request, CancellationToken ct)
     {
         var result = await refreshAccessTokenUseCase.ExecuteAsync(request, ct);
         return Ok(ApiResponse<RefreshAccessTokenResponse>.Success(result, "Token refreshed."));
     }
 
     [HttpPost("logout")]
-    public async Task<IActionResult> Logout(CancellationToken ct)
+    public async Task<ActionResult<ApiResponse<LogoutResponse>>> Logout(CancellationToken ct)
     {
         var result = await logoutUseCase.ExecuteAsync(new LogoutRequest { UserId = GetUserId() }, ct);
         return Ok(ApiResponse<LogoutResponse>.Success(result, result.Message));
     }
 
     [HttpPost("change-password")]
-    public async Task<IActionResult> ChangePassword(ChangePasswordRequest request, CancellationToken ct)
+    public async Task<ActionResult<ApiResponse<ChangePasswordResponse>>> ChangePassword(ChangePasswordRequest request, CancellationToken ct)
     {
         request.UserId = GetUserId();
         var result = await changePasswordUseCase.ExecuteAsync(request, ct);
