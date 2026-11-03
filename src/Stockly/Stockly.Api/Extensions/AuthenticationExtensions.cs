@@ -20,7 +20,8 @@ public static class AuthenticationExtensions
                 ValidateIssuerSigningKey = true,
                 ValidIssuer = configuration["JwtSettings:Issuer"],
                 ValidAudience = configuration["JwtSettings:Audience"],
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtSettings:Audience"] ?? throw new Exception("JWT Secret Key is not configured")))
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtSettings:SecretKey"]
+                ?? throw new Exception("JWT Secret Key is not configured")))
             };
         });
 
