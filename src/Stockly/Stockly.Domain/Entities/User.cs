@@ -11,6 +11,8 @@ public class User
     public string FullName { get; private set; } = string.Empty;
     public Role Role { get; private set; }
     public bool IsActive { get; private set; }
+    public string? RefreshToken { get; private set; }
+    public DateTime? RefreshTokenExpiry { get; private set; }
     public DateTime CreatedAt { get; private set; }
     public DateTime? UpdatedAt { get; private set; }
 
@@ -35,6 +37,8 @@ public class User
 
     public bool CanLogin => IsActive;
     public bool CanBeUpdated => IsActive;
+    public bool CanBeRestored => !IsActive;
+    public bool CanRefresh(DateTime utcNow) => IsActive && RefreshToken is not null && RefreshTokenExpiry > utcNow;
 
     public void UpdateProfile(string email, string fullName)
     {
@@ -52,6 +56,7 @@ public class User
         ValidateRole(role);
 
         Role = role;
+        RevokeSessions();
         UpdatedAt = DateTime.UtcNow;
     }
 
@@ -63,7 +68,26 @@ public class User
             throw new DomainException("Password hash is required.");
 
         PasswordHash = passwordHash;
+        RevokeSessions();
         UpdatedAt = DateTime.UtcNow;
+    }
+
+    public void SetRefreshToken(string refreshToken, DateTime expiryTime)
+    {
+        if (!CanLogin)
+            throw new DomainException("Cannot issue a refresh token for a deactivated user.");
+
+        if (string.IsNullOrWhiteSpace(refreshToken))
+            throw new DomainException("Refresh token is required.");
+
+        RefreshToken = refreshToken;
+        RefreshTokenExpiry = expiryTime;
+    }
+
+    public void RevokeSessions()
+    {
+        RefreshToken = null;
+        RefreshTokenExpiry = null;
     }
 
     public void SoftDelete()
@@ -72,6 +96,7 @@ public class User
             throw new DomainException("User is already deactivated.");
 
         IsActive = false;
+        RevokeSessions();
         UpdatedAt = DateTime.UtcNow;
     }
 
