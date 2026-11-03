@@ -34,8 +34,7 @@ public class CategoryRepository(AppDbContext context) : ICategoryRepository
             query = query.Where(c => c.Name.Contains(keyword));
 
         return await query
-            .OrderBy(c => c.Name)
-            .ThenBy(c => c.Id)
+            .OrderBy(c => c.CreatedAt)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync(ct);

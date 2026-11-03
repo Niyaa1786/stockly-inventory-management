@@ -49,8 +49,7 @@ public class ProductRepository(AppDbContext context) : IProductRepository
             query = query.Where(p => p.Name.Contains(keyword) || p.Sku.Contains(keyword));
 
         return await query
-            .OrderBy(p => p.Name)
-            .ThenBy(p => p.Id)
+            .OrderBy(p => p.CreatedAt)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync(ct);
