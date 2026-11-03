@@ -1,4 +1,5 @@
 using FluentValidation;
+using Stockly.Application.Common.Exceptions;
 using Stockly.Application.Common.Interfaces;
 using Stockly.Domain.Entities;
 
@@ -11,7 +12,11 @@ public class CreateCategoryUseCase(IUnitOfWork unitOfWork, IValidator<CreateCate
     {
         validator.ValidateAndThrow(request);
 
-        var category = new Category(request.Name, request.Description);
+        var name = request.Name.Trim();
+        if (await unitOfWork.Categories.IsNameTakenAsync(name, null, ct))
+            throw new AppValidationException(nameof(request.Name), "Category name already exists.");
+
+        var category = new Category(name, request.Description);
 
         unitOfWork.Categories.Add(category);
         await unitOfWork.SaveChangesAsync(ct);

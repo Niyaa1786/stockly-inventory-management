@@ -12,6 +12,9 @@ public class UpdateCategoryUseCase(IUnitOfWork unitOfWork, IValidator<UpdateCate
     {
         validator.ValidateAndThrow(request);
 
+        if (await unitOfWork.Categories.IsNameTakenAsync(request.Name.Trim(), request.Id, ct))
+            throw new AppValidationException(nameof(request.Name), "Category name already exists.");
+
         var category = await unitOfWork.Categories.GetByIdAsync(request.Id, ct)
             ?? throw new NotFoundException(nameof(Category), request.Id);
 
