@@ -23,7 +23,7 @@ public class AuthController(
     public async Task<ActionResult<ApiResponse<LoginResponse>>> Login(LoginRequest request, CancellationToken ct)
     {
         var result = await loginUseCase.ExecuteAsync(request, ct);
-        return Ok(ApiResponse<LoginResponse>.Success(result, result.Message));
+        return Ok(ApiResponse<LoginResponse>.Success(result, "Login successful."));
     }
 
     [HttpPost("refresh-token")]
@@ -38,7 +38,7 @@ public class AuthController(
     public async Task<ActionResult<ApiResponse<LogoutResponse>>> Logout(CancellationToken ct)
     {
         var result = await logoutUseCase.ExecuteAsync(new LogoutRequest { UserId = GetUserId() }, ct);
-        return Ok(ApiResponse<LogoutResponse>.Success(result, result.Message));
+        return Ok(ApiResponse<LogoutResponse>.Success(result, "Logout successful."));
     }
 
     [HttpPost("change-password")]
@@ -46,7 +46,7 @@ public class AuthController(
     {
         request.UserId = GetUserId();
         var result = await changePasswordUseCase.ExecuteAsync(request, ct);
-        return Ok(ApiResponse<ChangePasswordResponse>.Success(result, result.Message));
+        return Ok(ApiResponse<ChangePasswordResponse>.Success(result, "Password changed successfully."));
     }
 
     private Guid GetUserId()
