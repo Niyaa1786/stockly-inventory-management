@@ -10,6 +10,9 @@ public class CategoryRepository(AppDbContext context) : ICategoryRepository
     public async Task<Category?> GetByIdAsync(Guid id, CancellationToken ct)
         => await context.Categories.FirstOrDefaultAsync(c => c.Id == id, ct);
 
+    public async Task<bool> IsNameTakenAsync(string name, Guid? excludeId = null, CancellationToken ct = default)
+        => await context.Categories.AnyAsync(c => c.Name == name && (excludeId == null || c.Id != excludeId), ct);
+
     public async Task<int> CountAsync(string? keyword, bool includeInactive, CancellationToken ct = default)
     {
         var query = context.Categories.AsQueryable();

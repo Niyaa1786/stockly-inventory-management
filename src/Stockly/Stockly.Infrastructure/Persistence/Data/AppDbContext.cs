@@ -34,6 +34,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             entity.Property(e => e.Description).HasMaxLength(1000);
             entity.Property(e => e.IsActive).IsRequired();
             entity.Property(e => e.CreatedAt).IsRequired();
+
+            entity.HasIndex(e => e.Name).IsUnique();
         });
 
         modelBuilder.Entity<Product>(entity =>
