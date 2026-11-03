@@ -36,7 +36,7 @@ public class GlobalExceptionHandler : IExceptionHandler
         else if (exception is UnauthorizedAccessException authEx)
         {
             statusCode = (int)HttpStatusCode.Unauthorized;
-            message = "Authentication is required";
+            message = authEx.Message;
         }
         else if (exception is ForbiddenException forbiddenEx)
         {
