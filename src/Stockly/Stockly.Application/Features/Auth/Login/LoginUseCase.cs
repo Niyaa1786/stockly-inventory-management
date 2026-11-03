@@ -25,6 +25,9 @@ public class LoginUseCase(
 
         var token = tokenGenerator.GenerateToken(user);
 
+        user.SetRefreshToken(token.RefreshToken, token.RefreshTokenExpiration);
+        await unitOfWork.SaveChangesAsync(ct);
+
         return new LoginResponse
         {
             AccessToken = token.AccessToken,

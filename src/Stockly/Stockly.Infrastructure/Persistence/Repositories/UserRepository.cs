@@ -11,8 +11,7 @@ public class UserRepository(AppDbContext context) : IUserRepository
         => await context.Users.FirstOrDefaultAsync(u => u.Id == id, ct);
 
     public async Task<User?> GetByEmailAsync(string email, CancellationToken ct = default)
-            => await context.Users.AsNoTracking()
-                .FirstOrDefaultAsync(u => u.Email == email, ct);
+            => await context.Users.FirstOrDefaultAsync(u => u.Email == email, ct);
 
     public async Task<User?> GetByRefreshTokenAsync(string refreshToken, CancellationToken ct = default)
             => await context.Users.FirstOrDefaultAsync(u => u.RefreshToken == refreshToken, ct);
