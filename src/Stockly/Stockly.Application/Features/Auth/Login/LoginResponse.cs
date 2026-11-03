@@ -7,7 +7,6 @@ public class LoginResponse
     public string AccessToken { get; set; } = string.Empty;
     public DateTime AccessTokenExpiration { get; set; }
     public UserDto User { get; set; } = new();
-    public string Message { get; set; } = "Login successful.";
 }
 public class UserDto
 {
