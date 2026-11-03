@@ -28,7 +28,7 @@ public class LoginUseCase(
         return new LoginResponse
         {
             AccessToken = token.AccessToken,
-            AccessTokenExpiration = token.AccessTokenExpiration,
+            RefreshToken = token.RefreshToken,
             User = new UserDto()
             {
                 Id = user.Id,

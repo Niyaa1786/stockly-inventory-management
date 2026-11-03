@@ -5,7 +5,7 @@ namespace Stockly.Application.Features.Auth.Login;
 public class LoginResponse
 {
     public string AccessToken { get; set; } = string.Empty;
-    public DateTime AccessTokenExpiration { get; set; }
+    public string RefreshToken { get; set; } = string.Empty;
     public UserDto User { get; set; } = new();
 }
 public class UserDto
