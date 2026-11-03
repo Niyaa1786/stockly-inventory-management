@@ -24,9 +24,7 @@ public class RefreshAccessTokenUseCase(
         return new RefreshAccessTokenResponse
         {
             AccessToken = token.AccessToken,
-            AccessTokenExpiration = token.AccessTokenExpiration,
             RefreshToken = token.RefreshToken,
-            RefreshTokenExpiration = token.RefreshTokenExpiration
         };
     }
 }
